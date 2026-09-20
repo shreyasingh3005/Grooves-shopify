@@ -154,20 +154,9 @@
     <div class="shoppable-track" data-autoplay="{{ section.settings.enable_autoplay }}">
       {%- for block in section.blocks -%}
         {%- assign product = all_products[block.settings.product] -%}
-        
-        <a href="{{ product.url | default: '#' }}" class="shoppable-card" {{ block.shopify_attributes }}>
-          
-          <!-- Clean Video Layer -->
-          {%- if block.settings.shopify_video != blank -%}
-            <video class="shoppable-video-bg html5-vid" {% if section.settings.enable_autoplay %}autoplay{% endif %} loop muted playsinline poster="{{ block.settings.shopify_video.preview_image | image_url: width: 400 }}">
-              <source src="{{ block.settings.shopify_video.sources[1].url }}" type="video/mp4">
-            </video>
-          {%- else -%}
-             <div class="shoppable-video-bg" style="background:#222; display:flex; align-items:center; justifyContent:center; color:#fff; font-size:12px; text-align:center; padding:10px;">Upload a Video</div>
-          {%- endif -%}
-
-          <!-- Glassmorphism Product Card Layer -->
-          {%- if product != blank -%}
+        {%- if product != blank and block.settings.shopify_video != blank -%}
+          <a href="{{ product.url }}" class="shoppable-card" {{ block.shopify_attributes }}>
+            {{ block.settings.shopify_video | video_tag: class: 'shoppable-video-bg html5-vid', autoplay: section.settings.enable_autoplay, loop: true, muted: true, controls: false, playsinline: true, image_size: '400x' }}
             <div class="shoppable-glass-card">
               <img src="{{ product.featured_image | image_url: width: 100 }}" class="shoppable-glass-img" alt="{{ product.title | escape }}" loading="lazy">
               <div class="shoppable-glass-info">
@@ -175,17 +164,12 @@
                 <p class="shoppable-glass-price">{{ product.price | money }}</p>
               </div>
             </div>
-          {%- else -%}
-            <div class="shoppable-glass-card">
-              {{ 'product-1' | placeholder_svg_tag: 'shoppable-glass-img' }}
-              <div class="shoppable-glass-info">
-                <p class="shoppable-glass-title">Assign a Product</p>
-                <p class="shoppable-glass-price">₹1,499</p>
-              </div>
-            </div>
-          {%- endif -%}
-          
-        </a>
+          </a>
+        {%- elsif request.design_mode -%}
+          <div class="shoppable-editor-notice" {{ block.shopify_attributes }}>
+            Assign a product and video to publish this card.
+          </div>
+        {%- endif -%}
       {%- endfor -%}
     </div>
   </div>

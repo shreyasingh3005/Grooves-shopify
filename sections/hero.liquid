@@ -529,9 +529,13 @@
 
   <div class="carousel-track">
     {% for block in section.blocks %}
+      {% assign hero_link = block.settings.slide_link %}
+      {% if hero_link == blank %}
+        {% assign hero_link = routes.root_url | append: 'collections/earbuds' %}
+      {% endif %}
       <div class="carousel-slide" {{ block.shopify_attributes }}>
-        {% if block.settings.slide_link != blank and block.settings.button_label == blank %}
-          <a href="{{ block.settings.slide_link }}" class="carousel-link" aria-label="{{ block.settings.heading | escape }}"></a>
+        {% if hero_link != blank and block.settings.button_label == blank %}
+          <a href="{{ hero_link }}" class="carousel-link" aria-label="{{ block.settings.heading | default: 'Shop earbuds' | escape }}"></a>
         {% endif %}
 
         <div
@@ -543,14 +547,17 @@
           {% if block.settings.mobile_image != blank %}
             <source
               media="(max-width: 767px)"
-              srcset="{{ block.settings.mobile_image | image_url: width: 1600 }}"
+              srcset="{{ block.settings.mobile_image | image_url: width: 360 }} 360w, {{ block.settings.mobile_image | image_url: width: 540 }} 540w, {{ block.settings.mobile_image | image_url: width: 750 }} 750w, {{ block.settings.mobile_image | image_url: width: 900 }} 900w"
+              sizes="100vw"
             >
           {% endif %}
 
           {% if block.settings.desktop_image != blank %}
             <img
               class="carousel-image"
-              src="{{ block.settings.desktop_image | image_url: width: 2400 }}"
+              src="{{ block.settings.desktop_image | image_url: width: 1440 }}"
+              srcset="{{ block.settings.desktop_image | image_url: width: 960 }} 960w, {{ block.settings.desktop_image | image_url: width: 1440 }} 1440w, {{ block.settings.desktop_image | image_url: width: 1920 }} 1920w, {{ block.settings.desktop_image | image_url: width: 2400 }} 2400w"
+              sizes="100vw"
               alt="{{ block.settings.desktop_image.alt | escape }}"
               width="{{ block.settings.desktop_image.width }}"
               height="{{ block.settings.desktop_image.height }}"
@@ -568,17 +575,17 @@
 
         {% if block.settings.heading != blank or block.settings.subheading != blank or block.settings.button_label != blank %}
           <div class="carousel-content">
-            {% if block.settings.heading != blank %}
-              <h2>{{ block.settings.heading }}</h2>
+            {% if block.settings.heading != blank or forloop.first %}
+              <h2>{{ block.settings.heading | default: 'Sound for your day. Power for your devices.' }}</h2>
             {% endif %}
 
-            {% if block.settings.subheading != blank %}
-              <p>{{ block.settings.subheading }}</p>
+            {% if block.settings.subheading != blank or forloop.first %}
+              <p>{{ block.settings.subheading | default: 'Explore earbuds, headphones and everyday charging essentials.' }}</p>
             {% endif %}
 
-            {% if block.settings.button_label != blank and block.settings.slide_link != blank %}
-              <a href="{{ block.settings.slide_link }}" class="carousel-btn">
-                {{ block.settings.button_label }}
+            {% if block.settings.button_label != blank or forloop.first %}
+              <a href="{{ hero_link }}" class="carousel-btn">
+                {{ block.settings.button_label | default: 'Shop earbuds' }}
               </a>
             {% endif %}
           </div>

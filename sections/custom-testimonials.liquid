@@ -149,20 +149,8 @@
             </div>
           {%- endif -%}
 
-          <!-- Horizontal Stars -->
-          <div class="testi-stars">
-            {%- for i in (1..5) -%}
-              <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
-            {%- endfor -%}
-          </div>
-          
           <div class="testi-text">"{{ block.settings.review_text }}"</div>
           <div class="testi-author">- {{ block.settings.author_name }}</div>
-          
-          <div class="testi-verified">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
-            Verified Buyer
-          </div>
         </div>
       {%- endfor -%}
     </div>

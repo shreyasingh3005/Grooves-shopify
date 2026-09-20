@@ -43,19 +43,6 @@
     >
       <!-- Left Column: Banners, Title, Items -->
       <div class="cart-page__main-column">
-        {%- unless cart.empty? -%}
-          <div class="cart-urgency-banner">
-            <div class="urgency-icon">🔥</div>
-            <div class="urgency-text">
-              <span><strong>High Demand!</strong> Items in your cart are reserved for <span id="cart-timer">10:00</span> minutes.</span>
-            </div>
-          </div>
-
-          <div class="cart-announcement-bar">
-            <span>⚡ <strong>Special Offer:</strong> Extra 5% OFF on Prepaid Orders! Use Code: <strong>PREPAID</strong></span>
-          </div>
-        {%- endunless -%}
-
         <div class="cart-page__title">
           {%- content_for 'block', id: 'cart-page-title', type: '_cart-title' -%}
         </div>
@@ -67,44 +54,10 @@
         {{ cart_page_more_blocks_content }}
       </div>
 
-      <!-- Right Column: Summary & Trust Badges -->
+      <!-- Right Column: Summary -->
       {%- unless cart.empty? -%}
         <div class="cart-page__summary">
           {%- content_for 'block', id: 'cart-page-summary', type: '_cart-summary' -%}
-          
-          <div class="cart-trust-badges-box">
-            <div class="trust-box-title">Why Shop With Us?</div>
-            <div class="trust-badge-grid">
-              <div class="trust-badge-item">
-                <div class="badge-icon-wrap">🔒</div>
-                <div class="badge-texts">
-                  <strong>100% Secure</strong>
-                  <span>Encrypted Checkout</span>
-                </div>
-              </div>
-              <div class="trust-badge-item">
-                <div class="badge-icon-wrap">🚀</div>
-                <div class="badge-texts">
-                  <strong>Fast Dispatch</strong>
-                  <span>Ships within 24 Hours</span>
-                </div>
-              </div>
-              <div class="trust-badge-item">
-                <div class="badge-icon-wrap">🔄</div>
-                <div class="badge-texts">
-                  <strong>Easy Replacement</strong>
-                  <span>24-Hour Policy</span>
-                </div>
-              </div>
-              <div class="trust-badge-item">
-                <div class="badge-icon-wrap">⭐</div>
-                <div class="badge-texts">
-                  <strong>2.5 Cr+ Happy</strong>
-                  <span>Customers</span>
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
       {%- endunless -%}
 
@@ -113,26 +66,6 @@
 {%- endcapture -%}
 
 {%- render 'cart-items-component', children: cart_items_children, section_id: section.id -%}
-
-<script>
-  document.addEventListener('DOMContentLoaded', function() {
-    let timerElement = document.getElementById('cart-timer');
-    if(timerElement) {
-      let duration = 10 * 60;
-      let timer = duration, minutes, seconds;
-      setInterval(function () {
-        minutes = parseInt(timer / 60, 10);
-        seconds = parseInt(timer % 60, 10);
-        minutes = minutes < 10 ? "0" + minutes : minutes;
-        seconds = seconds < 10 ? "0" + seconds : seconds;
-        timerElement.textContent = minutes + ":" + seconds;
-        if (--timer < 0) {
-          timer = duration;
-        }
-      }, 1000);
-    }
-  });
-</script>
 
 {% stylesheet %}
   .cart-page {
