@@ -380,6 +380,7 @@
 
   #adymize-carousel-{{ section.id }} .carousel-btn {
     display: inline-block;
+    min-height: 48px;
     padding: 14px 34px;
     background: {{ section.settings.button_bg_color }} !important;
     color: {{ section.settings.button_text_color }} !important;
@@ -434,18 +435,30 @@
   }
 
   #adymize-carousel-{{ section.id }} .carousel-dot {
-    width: 12px;
-    height: 12px;
+    width: 44px;
+    height: 44px;
     padding: 0;
-    border: none;
+    border: 14px solid transparent;
     border-radius: 50%;
     background: rgba(255,255,255,0.5);
+    background-clip: padding-box;
     cursor: pointer;
   }
 
   #adymize-carousel-{{ section.id }} .carousel-dot.active {
     background: #fff;
-    transform: scale(1.2);
+    background-clip: padding-box;
+  }
+
+  #adymize-carousel-{{ section.id }} :focus-visible {
+    outline: 3px solid #ffffff;
+    outline-offset: 3px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #adymize-carousel-{{ section.id }} .carousel-track {
+      transition: none;
+    }
   }
 
   @media screen and (max-width: 767px) {
@@ -631,6 +644,7 @@
       
       const totalSlides = slides.length;
       const autoplay = carousel.dataset.autoplay === 'true';
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       const speed = parseInt(carousel.dataset.speed, 10) || 5000;
       let currentSlide = 0;
       let autoplayInterval;
@@ -655,7 +669,7 @@
       function prevSlide() { updateSlide((currentSlide - 1 + totalSlides) % totalSlides); }
 
       function startAutoplay() {
-        if (!autoplay) return;
+        if (!autoplay || reduceMotion) return;
         stopAutoplay();
         autoplayInterval = setInterval(nextSlide, speed);
         carousel.dataset.intervalId = autoplayInterval;
@@ -683,6 +697,10 @@
 
       carousel.addEventListener('mouseenter', stopAutoplay);
       carousel.addEventListener('mouseleave', startAutoplay);
+      carousel.addEventListener('focusin', stopAutoplay);
+      carousel.addEventListener('focusout', event => {
+        if (!carousel.contains(event.relatedTarget)) startAutoplay();
+      });
 
       startAutoplay();
     }
