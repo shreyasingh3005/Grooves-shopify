@@ -230,6 +230,41 @@
     fill: currentColor;
   }
 
+  .grooves-whatsapp {
+    position: fixed;
+    right: 20px;
+    bottom: max(20px, env(safe-area-inset-bottom));
+    z-index: 30;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: #25d366;
+    color: #ffffff;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
+  }
+
+  .grooves-whatsapp:hover,
+  .grooves-whatsapp:focus-visible {
+    background: #1da851;
+    color: #ffffff;
+  }
+
+  .grooves-whatsapp svg {
+    width: 28px;
+    height: 28px;
+    fill: currentColor;
+  }
+
+  @media screen and (max-width: 749px) {
+    .grooves-whatsapp {
+      right: 16px;
+      bottom: max(16px, env(safe-area-inset-bottom));
+    }
+  }
+
   .footer-copyright {
     font-size: 13px;
     color: {{ section.settings.text_color }};
@@ -362,24 +397,29 @@
       
       <div class="footer-socials">
         {%- if section.settings.show_social -%}
-          {%- if settings.social_facebook_link != blank -%}
-            <a href="{{ settings.social_facebook_link }}" target="_blank" rel="noopener" aria-label="Facebook">
+          {%- if section.settings.facebook_url != blank -%}
+            <a href="{{ section.settings.facebook_url }}" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
               <svg viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
             </a>
           {%- endif -%}
-          {%- if settings.social_instagram_link != blank -%}
-            <a href="{{ settings.social_instagram_link }}" target="_blank" rel="noopener" aria-label="Instagram">
+          {%- if section.settings.instagram_url != blank -%}
+            <a href="{{ section.settings.instagram_url }}" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
               <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37zM17.5 6.5h.01"/></svg>
             </a>
           {%- endif -%}
-          {%- if settings.social_twitter_link != blank -%}
-            <a href="{{ settings.social_twitter_link }}" target="_blank" rel="noopener" aria-label="Twitter">
+          {%- if section.settings.twitter_url != blank -%}
+            <a href="{{ section.settings.twitter_url }}" target="_blank" rel="noopener noreferrer" aria-label="Twitter">
               <svg viewBox="0 0 24 24"><path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z"/></svg>
             </a>
           {%- endif -%}
-          {%- if settings.social_youtube_link != blank -%}
-            <a href="{{ settings.social_youtube_link }}" target="_blank" rel="noopener" aria-label="YouTube">
+          {%- if section.settings.youtube_url != blank -%}
+            <a href="{{ section.settings.youtube_url }}" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
               <svg viewBox="0 0 24 24"><path d="M22.54 6.42a2.78 2.78 0 00-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 00-1.94 2A29 29 0 001 11.75a29 29 0 00.46 5.33A2.78 2.78 0 003.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 001.94-2 29 29 0 00.46-5.25 29 29 0 00-.46-5.33zM9.75 15.02V8.48l6.5 3.27-6.5 3.27z"/></svg>
+            </a>
+          {%- endif -%}
+          {%- if section.settings.linkedin_url != blank -%}
+            <a href="{{ section.settings.linkedin_url }}" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+              <svg viewBox="0 0 24 24"><path d="M6.5 8.5H3V21h3.5V8.5ZM4.75 3A2.05 2.05 0 1 0 4.75 7.1 2.05 2.05 0 0 0 4.75 3ZM21 13.5c0-3.75-2-5.5-4.65-5.5a4.05 4.05 0 0 0-3.65 2.05V8.5H9.2V21h3.5v-6.2c0-1.65.3-3.25 2.35-3.25 2 0 2 1.9 2 3.35V21H21v-7.5Z"/></svg>
             </a>
           {%- endif -%}
         {%- endif -%}
@@ -402,6 +442,12 @@
     </div>
   </div>
 </footer>
+
+{%- if section.settings.whatsapp_url != blank -%}
+  <a class="grooves-whatsapp" href="{{ section.settings.whatsapp_url }}" target="_blank" rel="noopener noreferrer" aria-label="Chat with Grooves on WhatsApp">
+    <svg viewBox="0 0 20 20" aria-hidden="true">{% render 'icon', icon: 'whatsapp' %}</svg>
+  </a>
+{%- endif -%}
 
 {% schema %}
 {
@@ -474,6 +520,46 @@
       "id": "show_social",
       "label": "Show social media icons",
       "default": true
+    },
+    {
+      "type": "header",
+      "content": "Grooves Social Links"
+    },
+    {
+      "type": "url",
+      "id": "facebook_url",
+      "label": "Facebook URL",
+      "default": "https://www.facebook.com/people/grooves-powered-by-infiniarc/61556742414399/"
+    },
+    {
+      "type": "url",
+      "id": "instagram_url",
+      "label": "Instagram URL",
+      "default": "https://www.instagram.com/grooves_audio/"
+    },
+    {
+      "type": "url",
+      "id": "youtube_url",
+      "label": "YouTube URL",
+      "default": "https://www.youtube.com/@grooves_audio"
+    },
+    {
+      "type": "url",
+      "id": "twitter_url",
+      "label": "X/Twitter URL",
+      "default": ""
+    },
+    {
+      "type": "url",
+      "id": "linkedin_url",
+      "label": "LinkedIn URL",
+      "default": "https://www.linkedin.com/company/grooves-audio/home/"
+    },
+    {
+      "type": "url",
+      "id": "whatsapp_url",
+      "label": "WhatsApp URL",
+      "default": "https://wa.me/9216921661"
     },
     {
       "type": "text",
